@@ -56,9 +56,6 @@ class DependencyExtractor(Application):
                 # get sources that are specified in the file
                 sources = [self.resolve_path(filename, x) for x in params['__depends__']]
 
-                # always depend on util
-                sources.append(os.path.abspath("{}/util.py".format(dirname)))
-
                 targets = params['__dest__']
                 if not hasattr(targets, '__iter__'):
                     targets = [targets]
