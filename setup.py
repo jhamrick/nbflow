@@ -17,7 +17,6 @@ for (dirname, dirnames, filenames) in os.walk("nbflow/example"):
         if filename.endswith(".pyc") or filename == '.sconsign.dblite':
             continue
         extension_files.append(os.path.join(root, filename))
-print(extension_files)
 
 
 name = 'nbflow'
