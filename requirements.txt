@@ -1,0 +1,4 @@
+traitlets
+nbconvert
+scons
+ipykernel
