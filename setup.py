@@ -6,11 +6,26 @@
 import os
 from distutils.core import setup
 
+
+# get paths to all the extension files
+extension_files = []
+for (dirname, dirnames, filenames) in os.walk("nbflow/example"):
+    root = os.path.relpath(dirname, "nbflow")
+    if '.ipynb_checkpoints' in dirname:
+        continue
+    for filename in filenames:
+        if filename.endswith(".pyc") or filename == '.sconsign.dblite':
+            continue
+        extension_files.append(os.path.join(root, filename))
+print(extension_files)
+
+
 name = 'nbflow'
 here = os.path.abspath(os.path.dirname(__file__))
 version_ns = {}
 with open(os.path.join(here, name, '_version.py')) as f:
     exec(f.read(), {}, version_ns)
+
 
 setup_args = dict(
     name=name,
@@ -28,8 +43,12 @@ setup_args = dict(
         'Programming Language :: Python :: 2.7',
     ],
     packages=['nbflow'],
-    scripts=['scripts/nbflow']
+    scripts=['scripts/nbflow'],
+    package_data={
+        'nbflow': extension_files
+    }
 )
+
 
 setup_args['install_requires'] = install_requires = []
 with open('requirements.txt') as f:

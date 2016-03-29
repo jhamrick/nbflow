@@ -63,6 +63,3 @@ target/
 
 # Scons
 .sconsign.dblite
-
-# Project-specific
-nbflow/example/results
