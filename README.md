@@ -1,5 +1,10 @@
 # nbflow
-Tools that support one-button reproducible workflows with the Jupyter Notebook and Scons.
+
+[![Build Status](https://travis-ci.org/jhamrick/nbflow.svg?branch=master)](https://travis-ci.org/jhamrick/nbflow)
+
+A tool that supports one-button reproducible workflows with the Jupyter Notebook and Scons.
+**Note: this currently requires Python 2 (because Scons does not yet support Python 3),
+and currently only supports Python kernels.**
 
 ## Installation
 
