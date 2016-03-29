@@ -42,6 +42,7 @@ def print_cmd_line(s, targets, sources, env):
 
 def setup(env, directories):
     env['PRINT_CMD_LINE_FUNC'] = print_cmd_line
+    env.Decider('timestamp-newer')
     DEPENDENCIES = json.loads(sp.check_output([sys.executable, "-m", "nbflow"] + directories))
     for script in DEPENDENCIES:
         deps = DEPENDENCIES[script]
