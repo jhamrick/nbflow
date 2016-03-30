@@ -37,6 +37,8 @@ def print_cmd_line(s, targets, sources, env):
         sys.stdout.write("%s --> None\n"% str(sources[0]))
     else:
         for target in targets:
+            if str(target) == '.phony':
+                target = 'None'
             sys.stdout.write("%s --> %s\n"% (str(sources[0]), str(target)))
 
 
@@ -46,4 +48,8 @@ def setup(env, directories):
     DEPENDENCIES = json.loads(sp.check_output([sys.executable, "-m", "nbflow"] + directories))
     for script in DEPENDENCIES:
         deps = DEPENDENCIES[script]
-        env.Command(deps['targets'], [script] + deps['sources'], build_notebook)
+        if len(deps['targets']) == 0:
+            targets = ['.phony']
+        else:
+            targets = deps['targets']
+        env.Command(targets, [script] + deps['sources'], build_notebook)

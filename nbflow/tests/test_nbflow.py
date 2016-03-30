@@ -1,12 +1,23 @@
 import sys
 import os
+import shutil
 
 from textwrap import dedent
-from .util import run_command
+from .util import run_command, clear_notebooks, create_notebook
 
 
-def test_nbflow_command(temp_cwd):
+def test_nbflow_no_args(temp_cwd):
     run_command([sys.executable, "-m", "nbflow"], retcode=1)
+
+
+def test_example(temp_cwd):
+    # copy example files
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "example"))
+    shutil.copytree(os.path.join(root, "analyses"), "analyses")
+    shutil.copy(os.path.join(root, "SConstruct"), "SConstruct")
+    clear_notebooks("analyses")
+
+    # check the explicit output of the nbflow command
     output = run_command([sys.executable, "-m", "nbflow", "analyses"])
     expected = dedent(
         """
@@ -30,9 +41,8 @@ def test_nbflow_command(temp_cwd):
     ).lstrip()
     assert output == expected
 
-
-def test_scons(temp_cwd):
-    output = run_command(["scons"]).replace("\x1b[?1034h", "")
+    # try running scons
+    output = run_command(["scons"])
     expected = dedent(
         """
         scons: Reading SConscript files ...
@@ -46,7 +56,8 @@ def test_scons(temp_cwd):
 
     assert output == expected
 
-    output = run_command(["scons", "-n"]).replace("\x1b[?1034h", "")
+    # run scons again, make sure it doesn't want to do anything
+    output = run_command(["scons", "-n"])
     expected = dedent(
         """
         scons: Reading SConscript files ...
@@ -58,3 +69,55 @@ def test_scons(temp_cwd):
     ).lstrip()
 
     assert output == expected
+
+
+def test_empty_notebook(temp_cwd, sconstruct):
+    create_notebook("test.ipynb", [
+        "__depends__ = []\n__dest__ = None"
+    ])
+    output = run_command(["scons"])
+    expected = dedent(
+        """
+        scons: Reading SConscript files ...
+        scons: done reading SConscript files.
+        scons: Building targets ...
+        test.ipynb --> None
+        scons: done building targets.
+        """
+    ).lstrip()
+
+    assert output == expected
+
+
+def test_notebook_with_errors(temp_cwd, sconstruct):
+    create_notebook("test.ipynb", [
+        "__depends__ = []\n__dest__ = None",
+        "assert False"
+    ])
+    run_command(["scons"], retcode=2)
+
+
+def test_notebook_without_depends(temp_cwd, sconstruct):
+    create_notebook("test.ipynb", [
+        "__dest__ = None"
+    ])
+    output = run_command(["scons"])
+    expected = dedent(
+        """
+        scons: Reading SConscript files ...
+        scons: done reading SConscript files.
+        scons: Building targets ...
+        scons: `.' is up to date.
+        scons: done building targets.
+        """
+    ).lstrip()
+
+    assert output == expected
+
+
+def test_notebook_without_dest(temp_cwd, sconstruct):
+    create_notebook("test.ipynb", [
+        "__depends__ = []"
+    ])
+    output = run_command(["scons"], retcode=2)
+

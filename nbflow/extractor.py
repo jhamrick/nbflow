@@ -58,10 +58,13 @@ class DependencyExtractor(Application):
 
                 targets = params['__dest__']
                 if not hasattr(targets, '__iter__'):
-                    targets = [targets]
+                    if targets is None:
+                        targets = []
+                    else:
+                        targets = [targets]
                 targets = [self.resolve_path(filename, x) for x in targets]
 
-                dependencies['{}/{}.ipynb'.format(dirname, modname)] = {
+                dependencies[os.path.join(dirname, '{}.ipynb'.format(modname))] = {
                     'targets': targets,
                     'sources': sources
                 }
