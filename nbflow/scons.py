@@ -37,7 +37,7 @@ def print_cmd_line(s, targets, sources, env):
         sys.stdout.write("%s --> None\n"% str(sources[0]))
     else:
         for target in targets:
-            if str(target) == '.phony':
+            if str(target).startswith('.phony'):
                 target = 'None'
             sys.stdout.write("%s --> %s\n"% (str(sources[0]), str(target)))
 
@@ -49,7 +49,7 @@ def setup(env, directories):
     for script in DEPENDENCIES:
         deps = DEPENDENCIES[script]
         if len(deps['targets']) == 0:
-            targets = ['.phony']
+            targets = ['.phony_{}'.format(script)]
         else:
             targets = deps['targets']
         env.Command(targets, [script] + deps['sources'], build_notebook)

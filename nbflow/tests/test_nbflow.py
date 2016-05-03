@@ -121,3 +121,25 @@ def test_notebook_without_dest(temp_cwd, sconstruct):
     ])
     output = run_command(["scons"], retcode=2)
 
+
+def test_multiple_notebooks_with_no_dests(temp_cwd, sconstruct):
+    create_notebook("test1.ipynb", [
+        "__depends__ = []\n__dest__ = []"
+    ])
+    create_notebook("test2.ipynb", [
+        "__depends__ = []\n__dest__ = []"
+    ])
+    output = run_command(["scons"])
+    expected = dedent(
+        """
+        scons: Reading SConscript files ...
+        scons: done reading SConscript files.
+        scons: Building targets ...
+        test1.ipynb --> None
+        test2.ipynb --> None
+        scons: done building targets.
+        """
+    ).lstrip()
+
+    assert output == expected
+
