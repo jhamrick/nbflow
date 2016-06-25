@@ -12,7 +12,7 @@ def build_notebook(target, source, env):
         "--execute",
         "--inplace",
         "--to", "notebook",
-        "--out", notebook,
+        "--output", notebook,
         notebook
     ]
     code = sp.call(cmd)
