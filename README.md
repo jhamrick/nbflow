@@ -11,7 +11,7 @@ and currently only supports Python kernels.**
 To install, run:
 
 ```
-pip install git+git://github.com/jhamrick/nbflow.git
+pip2 install git+git://github.com/jhamrick/nbflow.git
 ```
 
 ## Usage
