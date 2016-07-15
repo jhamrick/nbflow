@@ -57,7 +57,7 @@ class DependencyExtractor(Application):
                 sources = [self.resolve_path(filename, x) for x in params['__depends__']]
 
                 targets = params['__dest__']
-                if not hasattr(targets, '__iter__'):
+                if isinstance(targets, str):
                     if targets is None:
                         targets = []
                     else:
