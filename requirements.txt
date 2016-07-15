@@ -2,3 +2,4 @@ traitlets
 nbconvert==4.1
 scons
 ipykernel
+doit>=0.29
