@@ -2,6 +2,7 @@ import json
 import sys
 import subprocess as sp
 
+import nbconvert
 
 def build_notebook(target, source, env):
     notebook = str(source[0])
@@ -12,9 +13,12 @@ def build_notebook(target, source, env):
         "--execute",
         "--inplace",
         "--to", "notebook",
-        "--output", notebook,
         notebook
     ]
+
+    if nbconvert.__version__ < '4.2.0':
+        cmd.extend(['--output', notebook])
+
     code = sp.call(cmd)
     if code != 0:
         raise RuntimeError("Error executing notebook")
