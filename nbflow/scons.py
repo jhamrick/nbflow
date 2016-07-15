@@ -2,20 +2,27 @@ import json
 import sys
 import subprocess as sp
 
+import nbconvert
 
-def build_notebook(target, source, env):
-    notebook = str(source[0])
+def build_cmd(notebook):
     cmd = [
         "jupyter", "nbconvert",
         "--log-level=ERROR",
         "--ExecutePreprocessor.timeout=120",
         "--execute",
         "--inplace",
-        "--to", "notebook",
-        "--output", notebook,
-        notebook
+        "--to", "notebook"
     ]
-    code = sp.call(cmd)
+
+    if nbconvert.__version__ < '4.2.0':
+        cmd.extend(['--output', notebook])
+    cmd.append(notebook)
+
+    return cmd
+
+def build_notebook(target, source, env):
+    notebook = str(source[0])
+    code = sp.call(build_cmd(notebook))
     if code != 0:
         raise RuntimeError("Error executing notebook")
 
