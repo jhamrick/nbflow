@@ -1,5 +1,6 @@
 import os
-from nbflow.doit import create_build_tasks
+from nbflow import doit
 
 def task_nbflow():
-    yield from create_build_tasks(['analyses'])
+    for task in doit.setup(['analyses']):
+        yield task
