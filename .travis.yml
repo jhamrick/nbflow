@@ -7,5 +7,6 @@ before_install:
 install:
   - pip install -U pip setuptools
   - PIP_FIND_LINKS=~/travis-wheels/wheelhouse pip install -r dev-requirements.txt -e .
+  - pip install scons doit
 script:
   - py.test -v -x
