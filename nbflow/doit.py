@@ -1,9 +1,8 @@
+from __future__ import print_function
+
 import json
 import subprocess as sp
 import sys
-
-from doit.action import CmdAction
-from doit.task import clean_targets
 
 from .extractor import DependencyExtractor
 from ._version import __version__
@@ -28,12 +27,13 @@ def touch_cmds(target):
         yield 'touch {0}'.format(str(t))
 
 
-def get_cmds(source, target):
-    yield build_notebook_cmd(source)
-    yield from touch_cmds(target)
+def get_cmds(notebook, target):
+    yield build_notebook_cmd(notebook)
+    for cmd in touch_cmds(target):
+        yield cmd
 
 
-def create_build_tasks(directories):
+def setup(directories):
     parsed = sp.check_output([sys.executable, "-m", "nbflow"] + directories,
                  universal_newlines=True)
     DEPENDENCIES = json.loads(parsed)
@@ -48,11 +48,11 @@ def create_build_tasks(directories):
         
         name = 'build-notebook:{0}'.format(script)
         file_dep = [script] + sources
-        actions = [CmdAction(cmd) for cmd in get_cmds(script, targets)]
-
+        actions = list(get_cmds(script, targets))
+        
         yield {'name': name,
                'actions': actions,
                'targets': targets,
                'file_dep': file_dep,
-               'clean': [clean_targets]}
+               'clean': True}
 
