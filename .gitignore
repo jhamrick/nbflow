@@ -63,3 +63,10 @@ target/
 
 # Scons
 .sconsign.dblite
+
+# doit
+.doit.db
+.doit.db.db
+
+# vim
+*.swp

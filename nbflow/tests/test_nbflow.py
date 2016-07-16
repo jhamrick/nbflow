@@ -12,7 +12,7 @@ def test_nbflow_no_args(temp_cwd):
 
 def test_example(temp_cwd):
     # copy example files
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "example"))
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "scons-example"))
     shutil.copytree(os.path.join(root, "analyses"), "analyses")
     shutil.copy(os.path.join(root, "SConstruct"), "SConstruct")
     clear_notebooks("analyses")

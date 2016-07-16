@@ -1,4 +1,3 @@
 traitlets
 nbconvert==4.1
-scons
 ipykernel

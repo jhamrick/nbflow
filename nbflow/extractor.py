@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import glob
 import json
@@ -57,11 +59,10 @@ class DependencyExtractor(Application):
                 sources = [self.resolve_path(filename, x) for x in params['__depends__']]
 
                 targets = params['__dest__']
-                if not hasattr(targets, '__iter__'):
-                    if targets is None:
-                        targets = []
-                    else:
-                        targets = [targets]
+                if targets is None:
+                    targets = []
+                elif isinstance(targets, str):
+                    targets = [targets]
                 targets = [self.resolve_path(filename, x) for x in targets]
 
                 dependencies[os.path.join(dirname, '{}.ipynb'.format(modname))] = {
