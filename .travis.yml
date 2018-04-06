@@ -2,6 +2,8 @@ language: python
 sudo: false
 python:
   - 2.7
+  - 3.5
+  - 3.6
 before_install:
   - git clone --quiet --depth 1 https://github.com/minrk/travis-wheels ~/travis-wheels
 install:
