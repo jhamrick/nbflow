@@ -1,17 +1,25 @@
-# nbflow
+# NBFlow
 
 [![Build Status](https://travis-ci.org/jhamrick/nbflow.svg?branch=master)](https://travis-ci.org/jhamrick/nbflow)
 
-A tool that supports one-button reproducible workflows with the Jupyter Notebook and Scons.
-**Note: this currently requires Python 2 (because Scons does not yet support Python 3),
-and currently only supports Python kernels.**
+A tool that supports one-button reproducible workflows with the Jupyter Notebook and Scons. **Note: this currently  only supports Python kernels.**
+
+> **UPDATE: Scons >= 3.0.0 now supports Python 3 so Python 2 isn't needed anymore!** Now Nbflow and Scons are both Python 2 and 3 compatible so you can choose whichever you want.
+
+> The actual version of Scons (3.0.1) currently supports Python >= 3.5, which is the default in Ubuntu 16.04
 
 ## Installation
 
 To install, run:
 
+Linux:
 ```
-pip2 install git+git://github.com/jhamrick/nbflow.git
+pip3 install git+git://github.com/jhamrick/nbflow.git
+```
+
+Windows:
+```
+pip install git+git://github.com/jhamrick/nbflow.git
 ```
 
 ## Usage

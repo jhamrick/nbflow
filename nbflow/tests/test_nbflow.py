@@ -4,6 +4,7 @@ import shutil
 
 from textwrap import dedent
 from .util import run_command, clear_notebooks, create_notebook
+import json
 
 
 def test_nbflow_no_args(temp_cwd):
@@ -39,7 +40,7 @@ def test_example(temp_cwd):
         }
         """ % dict(path=os.path.abspath(os.path.realpath(temp_cwd)))
     ).lstrip()
-    assert output == expected
+    assert json.loads(output.decode('UTF-8')) == json.loads(expected)
 
     # try running scons
     output = run_command(["scons"])
@@ -54,7 +55,7 @@ def test_example(temp_cwd):
         """
     ).lstrip()
 
-    assert output == expected
+    assert output == expected.encode('UTF-8')
 
     # run scons again, make sure it doesn't want to do anything
     output = run_command(["scons", "-n"])
@@ -68,7 +69,7 @@ def test_example(temp_cwd):
         """
     ).lstrip()
 
-    assert output == expected
+    assert output == expected.encode('UTF-8')
 
 
 def test_empty_notebook(temp_cwd, sconstruct):
@@ -86,7 +87,7 @@ def test_empty_notebook(temp_cwd, sconstruct):
         """
     ).lstrip()
 
-    assert output == expected
+    assert output == expected.encode('UTF-8')
 
 
 def test_notebook_with_errors(temp_cwd, sconstruct):
@@ -112,7 +113,7 @@ def test_notebook_without_depends(temp_cwd, sconstruct):
         """
     ).lstrip()
 
-    assert output == expected
+    assert output == expected.encode('UTF-8')
 
 
 def test_notebook_without_dest(temp_cwd, sconstruct):
@@ -141,5 +142,5 @@ def test_multiple_notebooks_with_no_dests(temp_cwd, sconstruct):
         """
     ).lstrip()
 
-    assert output == expected
+    assert output == expected.encode('UTF-8')
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import glob
 import json
@@ -11,8 +12,8 @@ from ._version import __version__
 
 class DependencyExtractor(Application):
 
-    name = Unicode(u'nbflow')
-    description = Unicode(u'Extract the hierarchy of dependencies from notebooks in the specified folder.')
+    name = 'nbflow'
+    description = 'Extract the hierarchy of dependencies from notebooks in the specified folder.'
     version = __version__
 
     def extract_parameters(self, nb):
@@ -57,7 +58,7 @@ class DependencyExtractor(Application):
                 sources = [self.resolve_path(filename, x) for x in params['__depends__']]
 
                 targets = params['__dest__']
-                if not hasattr(targets, '__iter__'):
+                if not isinstance(targets, list):
                     if targets is None:
                         targets = []
                     else:
