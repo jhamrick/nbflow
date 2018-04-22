@@ -4,11 +4,13 @@ import subprocess as sp
 
 import nbconvert
 
+TIMEOUT = "120"
+
 def build_cmd(notebook):
     cmd = [
         "jupyter", "nbconvert",
         "--log-level=ERROR",
-        "--ExecutePreprocessor.timeout=120",
+        "--ExecutePreprocessor.timeout=" + TIMEOUT,
         "--execute",
         "--inplace",
         "--to", "notebook"
@@ -49,9 +51,12 @@ def print_cmd_line(s, targets, sources, env):
             sys.stdout.write("%s --> %s\n"% (str(sources[0]), str(target)))
 
 
-def setup(env, directories):
+def setup(env, directories, timeout=None):
     env['PRINT_CMD_LINE_FUNC'] = print_cmd_line
     env.Decider('timestamp-newer')
+    if timeout is not None:
+        global TIMEOUT
+        TIMEOUT = str(timeout)
     DEPENDENCIES = json.loads(sp.check_output([sys.executable, "-m", "nbflow"] + directories).decode('UTF-8'))
     for script in DEPENDENCIES:
         deps = DEPENDENCIES[script]

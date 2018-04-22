@@ -2,4 +2,8 @@ import os
 from nbflow.scons import setup
 
 env = Environment(ENV=os.environ)
-setup(env, ["analyses"])
+timeout = ARGUMENTS.get('timeout', 0)
+if int(timeout):
+    setup(env, ["analyses"], int(timeout))
+else:
+    setup(env, ["analyses"])
