@@ -1,6 +1,6 @@
 # NBFlow
 
-[![Build Status](https://travis-ci.org/jhamrick/nbflow.svg?branch=master)](https://travis-ci.org/jhamrick/nbflow)
+[![Build Status](https://travis-ci.org/jhamrick/nbflow.svg?branch=master)](https://travis-ci.org/jhamrick/nbflow)  [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/jhamrick/nbflow/master)
 
 A tool that supports one-button reproducible workflows with the Jupyter Notebook and Scons. **Note: this currently  only supports Python kernels.**
 
@@ -26,6 +26,16 @@ pip install git+git://github.com/jhamrick/nbflow.git
 
 For a complete example of how to use nbflow, check out [the example](nbflow/example)
 in this repository.
+
+You can now you Binder to check the example online:
+
+1. Entre in Binder [here](https://mybinder.org/v2/gh/jhamrick/nbflow/master) or through the badge above
+2. Open a terminal
+3. Run `cd nbflow/example`
+4. Run `scons`
+5. Check the results in the `results` directory
+
+Optionally you can modify the notebook in this online environment and check how the results change.
 
 ### Analysis notebooks
 
