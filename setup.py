@@ -47,16 +47,13 @@ setup_args = dict(
     scripts=['scripts/nbflow'],
     package_data={
         'nbflow': extension_files
-    }
+    },
+    install_requires=[
+        "traitlets",
+        "nbconvert==4.1",
+        "scons>=3.0.0",
+        "ipykernel",
+    ]
 )
-
-
-setup_args['install_requires'] = install_requires = []
-with open('requirements.txt') as f:
-    for line in f.readlines():
-        req = line.strip()
-        if not req or req.startswith(('-e', '#')):
-            continue
-        install_requires.append(req)
 
 setup(**setup_args)
