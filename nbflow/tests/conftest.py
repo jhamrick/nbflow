@@ -28,6 +28,6 @@ def sconstruct(temp_cwd):
             from nbflow.scons import setup
 
             env = Environment(ENV=os.environ)
-            setup(env, ["."])
+            setup(env, ["."], ARGUMENTS)
             """
         ))
