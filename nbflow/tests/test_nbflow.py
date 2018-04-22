@@ -11,6 +11,15 @@ def test_nbflow_no_args(temp_cwd):
     run_command([sys.executable, "-m", "nbflow"], retcode=1)
 
 
+def test_notebook_long_excecution(temp_cwd, sconstruct):
+    # copy example files
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "example"))
+    shutil.copytree(os.path.join(root, "analyses"), "analyses")
+    shutil.copy(os.path.join(root, "SConstruct"), "SConstruct")
+    clear_notebooks("analyses")
+
+    run_command(["scons","timeout=1"], retcode=2)
+
 def test_example(temp_cwd):
     # copy example files
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "example"))

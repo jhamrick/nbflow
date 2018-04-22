@@ -1,14 +1,16 @@
 import json
 import sys
 import subprocess as sp
+from functools import partial
 
 import nbconvert
 
-def build_cmd(notebook):
+
+def build_cmd(notebook, timeout):
     cmd = [
         "jupyter", "nbconvert",
         "--log-level=ERROR",
-        "--ExecutePreprocessor.timeout=120",
+        "--ExecutePreprocessor.timeout=" + timeout,
         "--execute",
         "--inplace",
         "--to", "notebook"
@@ -20,9 +22,9 @@ def build_cmd(notebook):
 
     return cmd
 
-def build_notebook(target, source, env):
+def build_notebook(target, source, env, timeout="120"):
     notebook = str(source[0])
-    code = sp.call(build_cmd(notebook))
+    code = sp.call(build_cmd(notebook, timeout))
     if code != 0:
         raise RuntimeError("Error executing notebook")
 
@@ -49,14 +51,19 @@ def print_cmd_line(s, targets, sources, env):
             sys.stdout.write("%s --> %s\n"% (str(sources[0]), str(target)))
 
 
-def setup(env, directories):
+def setup(env, directories, args):
     env['PRINT_CMD_LINE_FUNC'] = print_cmd_line
     env.Decider('timestamp-newer')
     DEPENDENCIES = json.loads(sp.check_output([sys.executable, "-m", "nbflow"] + directories).decode('UTF-8'))
+    timeout = args.get('timeout', None)
+    if timeout is not None:
+        build_notebook_timeout = partial(build_notebook, timeout=str(timeout))
+    else:
+        build_notebook_timeout = build_notebook
     for script in DEPENDENCIES:
         deps = DEPENDENCIES[script]
         if len(deps['targets']) == 0:
             targets = ['.phony_{}'.format(script)]
         else:
             targets = deps['targets']
-        env.Command(targets, [script] + deps['sources'], build_notebook)
+        env.Command(targets, [script] + deps['sources'], build_notebook_timeout)
