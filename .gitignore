@@ -63,3 +63,7 @@ target/
 
 # Scons
 .sconsign.dblite
+
+\.pytest_cache/
+
+MANIFEST

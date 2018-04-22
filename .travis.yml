@@ -4,10 +4,8 @@ python:
   - 2.7
   - 3.5
   - 3.6
-before_install:
-  - git clone --quiet --depth 1 https://github.com/minrk/travis-wheels ~/travis-wheels
+  - 3.7-dev 
 install:
-  - pip install -U pip setuptools
-  - PIP_FIND_LINKS=~/travis-wheels/wheelhouse pip install -r dev-requirements.txt -e .
+  - pip install tox-travis
 script:
-  - py.test -v -x
+  - tox
