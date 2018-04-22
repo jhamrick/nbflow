@@ -1,0 +1,5 @@
+name: nbflow
+channels:
+dependencies:
+   - pip:
+     - "git+git://github.com/jhamrick/nbflow.git"
